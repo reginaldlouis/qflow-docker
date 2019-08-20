@@ -1,14 +1,14 @@
 # Qflow docker
 
 ## Build
-To build a qflow image from official package repository
+To build a qflow image from official package repository only
 ```
-docker build -f Dockerfile-from-package -t qflow .
+docker build -f pkg.Dockerfile -t qflow .
 ```
 
-To build a custom qflow, tweak as need `Docker-from-source` and run
+To build a custom qflow and dependencies from source code, run
 ```
-docker build -f Dockerfile-from-source -t qflow .
+docker build -f dev.Dockerfile -t qflow .
 ```
 
 ## Run
