@@ -6,9 +6,10 @@ RUN apt update \
     && apt -y install \
         build-essential clang bison flex libreadline-dev gawk \
         tcl-dev libffi-dev git graphviz xdot pkg-config python3 autoconf gperf \
-        cmake libgsl0-dev libx11-dev tk-dev
+        cmake libgsl0-dev libx11-dev tk-dev \
+        libglu1-mesa-dev freeglut3-dev mesa-common-dev libcairo2-dev csh tcsh
 
-# Install IVerilog
+# Install iverilog
 WORKDIR /workspace/iverilog
 RUN git clone https://github.com/steveicarus/iverilog.git . \
     && git checkout tags/v10_3 \
@@ -18,12 +19,12 @@ RUN git clone https://github.com/steveicarus/iverilog.git . \
     && make check \
     && make install
 
-# Install Yosys
+# Install yosys
 WORKDIR /workspace/yosys
 RUN git clone https://github.com/YosysHQ/yosys.git . \
     && git checkout tags/yosys-0.8 \
     && make config-clang \
-    && time make \
+    && make \
     && make test \
     && make install
 
@@ -47,14 +48,27 @@ RUN git clone git://opencircuitdesign.com/qrouter . \
     && make install
 
 # Install magic
+WORKDIR /workspace/magic
+RUN git clone git://opencircuitdesign.com/magic . \
+    && git checkout tags/8.2.102 \
+    && ./configure \
+    && make \
+    && make install
 
 # Install netgen
+WORKDIR /workspace/netgen
+RUN git clone git://opencircuitdesign.com/netgen . \
+    && git checkout tags/1.5.118 \
+    && ./configure \
+    && make \
+    && make install
 
-# Install Qflow
-# WORKDIR /workspace/qflow
-# RUN git clone git://opencircuitdesign.com/qflow . \
-#     && git checkout qflow-1.3 
-
-
+# Install qflow
+WORKDIR /workspace/qflow
+RUN git clone git://opencircuitdesign.com/qflow . \
+    && git checkout qflow-1.3 \
+    && ./configure \
+    && make \
+    && make install
 
 ENTRYPOINT [ "qflow" ]
