@@ -6,8 +6,7 @@ RUN apt update \
     && apt -y install \
         build-essential clang bison flex libreadline-dev gawk \
         tcl-dev libffi-dev git graphviz xdot pkg-config python3 autoconf gperf \
-        cmake libgsl0-dev libx11-dev
-        # termcap 
+        cmake libgsl0-dev libx11-dev tk-dev
 
 # Install IVerilog
 WORKDIR /workspace/iverilog
@@ -40,9 +39,11 @@ RUN git clone https://github.com/rubund/graywolf.git . \
 
 # Install qrouter
 WORKDIR /workspace/qrouter
-RUN git clone https://github.com/leviathanch/qrouter.git . \
+RUN git clone git://opencircuitdesign.com/qrouter . \
+    && git checkout tags/1.4.9 \
     && ./configure \
-    && make \
+    && sed 's/CFLAGS += -g -O2/CFLAGS += -g -O2 -I\/usr\/include\/tcl8.6/' < Makefile > Makefile.fixed \
+    && make -f Makefile.fixed \
     && make install
 
 # Install magic
