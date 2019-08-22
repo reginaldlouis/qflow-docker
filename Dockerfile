@@ -4,10 +4,10 @@ ARG DEBIAN_FRONTEND=noninteractive
 
 RUN apt update \
     && apt -y install \
-        build-essential clang bison flex libreadline-dev gawk \
-        tcl-dev libffi-dev git graphviz xdot pkg-config python3 autoconf gperf \
-        cmake libgsl0-dev libx11-dev tk-dev \
-        libglu1-mesa-dev freeglut3-dev mesa-common-dev libcairo2-dev csh tcsh
+        build-essential clang bison flex libreadline-dev gawk tcl-dev \
+        libffi-dev git graphviz xdot pkg-config python3 autoconf gperf \
+        cmake libgsl0-dev libx11-dev tk-dev python3-tk libglu1-mesa-dev \
+        reeglut3-dev mesa-common-dev libcairo2-dev csh tcsh
 
 # Install iverilog
 WORKDIR /workspace/iverilog
@@ -70,5 +70,8 @@ RUN git clone git://opencircuitdesign.com/qflow . \
     && ./configure \
     && make \
     && make install
+
+#RUN rm -rf /workspace
+WORKDIR /
 
 ENTRYPOINT [ "qflow" ]
