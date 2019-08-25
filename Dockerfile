@@ -7,7 +7,7 @@ RUN apt update \
         build-essential clang bison flex libreadline-dev gawk tcl-dev \
         libffi-dev git graphviz xdot pkg-config python3 autoconf gperf \
         cmake libgsl0-dev libx11-dev tk-dev python3-tk libglu1-mesa-dev \
-        reeglut3-dev mesa-common-dev libcairo2-dev csh tcsh
+        freeglut3-dev mesa-common-dev libcairo2-dev csh tcsh
 
 # Install iverilog
 WORKDIR /workspace/iverilog
@@ -25,7 +25,6 @@ RUN git clone https://github.com/YosysHQ/yosys.git . \
     && git checkout tags/yosys-0.8 \
     && make config-clang \
     && make \
-    && make test \
     && make install
 
 # Install graywolf
@@ -43,8 +42,7 @@ WORKDIR /workspace/qrouter
 RUN git clone git://opencircuitdesign.com/qrouter . \
     && git checkout tags/1.4.9 \
     && ./configure \
-    && sed 's/CFLAGS += -g -O2/CFLAGS += -g -O2 -I\/usr\/include\/tcl8.6/' < Makefile > Makefile.fixed \
-    && make -f Makefile.fixed \
+    && make \
     && make install
 
 # Install magic
@@ -71,7 +69,6 @@ RUN git clone git://opencircuitdesign.com/qflow . \
     && make \
     && make install
 
-#RUN rm -rf /workspace
 WORKDIR /
 
 ENTRYPOINT [ "qflow" ]
